@@ -1,6 +1,7 @@
 # training/eval.py
 
 import torch
+from tqdm import tqdm
 
 
 def evaluate_model(model, dataloader, loss_fn, metrics_fn, device, return_preds=False):
@@ -31,7 +32,7 @@ def evaluate_model(model, dataloader, loss_fn, metrics_fn, device, return_preds=
     all_indices = []
 
     with torch.no_grad():
-        for batch_idx, (images, labels) in enumerate(dataloader):
+        for batch_idx, (images, labels) in tqdm(enumerate(dataloader), desc="Evaluating", leave=False):
             images = images.to(device)
             labels = labels.to(device)
 

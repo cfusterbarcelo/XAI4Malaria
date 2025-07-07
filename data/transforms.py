@@ -12,7 +12,8 @@ class CLAHETransform:
     """
 
     def __init__(self, clip_limit=2.0, tile_grid_size=(8, 8)):
-        self.clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
+        self.clip_limit = clip_limit
+        self.tile_grid_size = tile_grid_size
 
     def __call__(self, img):
         """
@@ -24,10 +25,13 @@ class CLAHETransform:
         if isinstance(img, Image.Image):
             img = np.array(img)
 
+        # Dynamically create CLAHE here (inside __call__)
+        clahe = cv2.createCLAHE(clipLimit=self.clip_limit, tileGridSize=self.tile_grid_size)
+
         # Convert to LAB and apply CLAHE to the L channel
         lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
         l, a, b = cv2.split(lab)
-        l_clahe = self.clahe.apply(l)
+        l_clahe = clahe.apply(l)
         lab_clahe = cv2.merge((l_clahe, a, b))
         rgb_clahe = cv2.cvtColor(lab_clahe, cv2.COLOR_LAB2RGB)
         return Image.fromarray(rgb_clahe)

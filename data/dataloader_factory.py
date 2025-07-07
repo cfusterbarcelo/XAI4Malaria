@@ -2,8 +2,9 @@
 
 from torch.utils.data import DataLoader
 from data.datasets import load_malaria_dataset
+from data.datasets import get_kfold_datasets
 
-
+# Dataloader with no folds
 def get_dataloaders(
     data_root,
     batch_size=32,
@@ -65,6 +66,7 @@ def get_dataloaders(
 
     return train_loader, val_loader, test_loader
 
+# Dataloader with folds
 def get_kfold_dataloaders(
     data_root,
     k_folds=5,

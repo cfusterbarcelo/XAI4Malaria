@@ -5,3 +5,6 @@ train:
   optimizer: adam
   loss: sparse_categorical_crossentropy
   early_stopping: false
+  num_workers: 0
+  num_folds: 5
+
