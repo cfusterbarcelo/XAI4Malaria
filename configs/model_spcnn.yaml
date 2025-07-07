@@ -1,0 +1,4 @@
+model:
+  name: spcnn
+  input_shape: [3, 32, 32]
+  num_classes: 2

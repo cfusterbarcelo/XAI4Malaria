@@ -1,0 +1,7 @@
+train:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  optimizer: adam
+  loss: sparse_categorical_crossentropy
+  early_stopping: false

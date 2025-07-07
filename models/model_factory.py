@@ -1,5 +1,12 @@
 # models/model_factory.py
 
+from models.spcnn import SPCNN
+
+model_registry = {
+    "spcnn": SPCNN,
+    # future: "resnet18": torchvision.models.resnet18,
+}
+
 def get_model(model_config):
     """
     Dynamically loads and returns a model instance based on the configuration.
