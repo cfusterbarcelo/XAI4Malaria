@@ -113,9 +113,11 @@ def train_one_fold(
             break
 
     return {
-        "fold": fold_idx,
-        "best_val_acc": best_val_acc,
-        "metrics": val_metrics,
-        "model_path": best_model_path,
-        "history": history
+    "fold": fold_idx,
+    "best_val_acc": best_val_acc,
+    "metrics": val_metrics,
+    "model_path": best_model_path,
+    "history": history,
+    "val_preds": val_metrics.get("preds"),
+    "val_labels": val_metrics.get("labels")
     }

@@ -1,6 +1,8 @@
 paths:
   data_root: "D:/Data/Malaria/MalariaSingleCellDataset/cell_images"
   output_root: "D:/Results/XAI4Malaria"
+  model_runs_dir: "D:/Results/XAI4Malaria/runs"
+  xai_runs_dir: "D:/Results/XAI4Malaria/explainability-runs"
   save_model: true
   save_logs: true
   save_figures: true

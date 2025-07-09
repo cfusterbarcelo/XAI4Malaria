@@ -50,8 +50,7 @@ def evaluate_model(model, dataloader, loss_fn, metrics_fn, device, return_preds=
     avg_loss = total_loss / len(dataloader.dataset)
     metrics = metrics_fn(all_labels, all_preds)
     metrics["loss"] = avg_loss
+    metrics["labels"] = all_labels
+    metrics["preds"] = all_preds
 
-    if return_preds:
-        return metrics, all_labels, all_preds, all_indices
-    else:
-        return metrics
+    return metrics

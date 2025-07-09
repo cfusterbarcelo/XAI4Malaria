@@ -61,26 +61,31 @@ def plot_confusion_matrix(y_true, y_pred, labels, save_path, normalize=True):
 def save_misclassified_examples(dataset, y_true, y_pred, output_dir, class_names=None):
     """
     Saves FP and FN images into separate folders for visual inspection.
-    Only works with Subset datasets where dataset[i] returns (image, label).
+    Assumes dataset[i] returns (image, label, path).
 
     Args:
-        dataset (Subset or ImageFolder): Dataset used during eval
+        dataset (Subset or Dataset): Dataset used during eval
         y_true (list[int]): Ground truth labels
         y_pred (list[int]): Predicted labels
         output_dir (str): Output path to save misclassified images
         class_names (list): Optional class label names
     """
     os.makedirs(output_dir, exist_ok=True)
-    false_positives = []
-    false_negatives = []
 
     for idx, (true, pred) in enumerate(zip(y_true, y_pred)):
         if true != pred:
-            image, label = dataset[idx]  # image: tensor
+            image, label, path = dataset[idx]
+
+            # Decide subfolder
             image_folder = "false_positives" if pred == 1 and true == 0 else "false_negatives"
             save_folder = os.path.join(output_dir, image_folder)
             os.makedirs(save_folder, exist_ok=True)
 
-            fname = f"idx{idx}_pred{pred}_true{true}.png"
+            # Build filename
+            original_name = os.path.basename(path)
+            class_str = f"_{class_names[true]}_as_{class_names[pred]}" if class_names else f"_t{true}_p{pred}"
+            fname = f"{idx}{class_str}_{original_name}"
             save_path = os.path.join(save_folder, fname)
+
+            # Save image tensor
             save_image(image, save_path)

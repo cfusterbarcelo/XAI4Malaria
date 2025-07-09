@@ -114,7 +114,7 @@ def main():
         val_preds = result.get("val_preds")
 
         # Save test set images path
-        val_image_paths = [sample[2] for sample in val_loader.dataset.samples]
+        val_image_paths = [val_loader.dataset.dataset.samples[i][0] for i in val_loader.dataset.indices]
         assert len(val_labels) == len(val_preds) == len(val_image_paths)
         fold_df = pd.DataFrame({
             "image_path": val_image_paths,
@@ -124,9 +124,14 @@ def main():
         fold_df.to_csv(os.path.join(fold_dir, "test_predictions.csv"), index=False)
 
         if val_labels is not None and val_preds is not None:
-            cm = confusion_matrix(val_labels, val_preds)
             cm_path = os.path.join(fold_dir, "confusion_matrix.png")
-            plot_confusion_matrix(cm, classes=["Uninfected", "Parasitized"], save_path=cm_path)
+            plot_confusion_matrix(
+            y_true=val_labels,
+            y_pred=val_preds,
+            labels=["Uninfected", "Parasitized"],
+            save_path=cm_path,
+            normalize=True
+            )
 
             # Save misclassified images
             if paths_cfg["paths"].get("save_figures", True):
@@ -147,7 +152,10 @@ def main():
         # Save metrics
         with open(os.path.join(fold_dir, "metrics.txt"), "w") as f:
             for k, v in result["metrics"].items():
-                f.write(f"{k}: {v:.4f}\n")
+                if isinstance(v, (float, int)):
+                    f.write(f"{k}: {v:.4f}\n")
+                else:
+                    f.write(f"{k}: {v}\n")
 
         all_results.append(result)
         # Aggregate final metrics across folds
