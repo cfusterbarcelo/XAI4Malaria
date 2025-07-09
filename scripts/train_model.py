@@ -12,7 +12,7 @@ from training.train import train_one_fold
 from training.metrics import classification_metrics
 from training.loss import get_loss_function  # You’ll create this later
 from data.dataloader_factory import get_kfold_dataloaders
-from utils.visualization import plot_training_curves, plot_confusion_matrix
+from utils.visualization import plot_training_curves, plot_confusion_matrix, save_misclassified_examples
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
@@ -104,7 +104,8 @@ def main():
             num_epochs=train_cfg["train"]["epochs"],
             output_dir=run_dir,
             save_model=save_model,
-            log_file=log_file
+            log_file=log_file,
+            early_stopping_patience=train_cfg["train"].get("early_stopping_patience", 10)
         )
 
         # Generate and save confusion matrix
@@ -114,6 +115,17 @@ def main():
             cm = confusion_matrix(val_labels, val_preds)
             cm_path = os.path.join(fold_dir, "confusion_matrix.png")
             plot_confusion_matrix(cm, classes=["Uninfected", "Parasitized"], save_path=cm_path)
+
+            # Save misclassified images
+            if paths_cfg["paths"].get("save_figures", True):
+                misclass_dir = os.path.join(fold_dir, "misclassified")
+                save_misclassified_examples(
+                    dataset=val_loader.dataset,
+                    y_true=val_labels,
+                    y_pred=val_preds,
+                    output_dir=misclass_dir,
+                    class_names=["Uninfected", "Parasitized"]
+                )
 
         # Save training curves
         if paths_cfg["paths"].get("save_figures", True):

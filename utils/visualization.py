@@ -27,10 +27,11 @@ def plot_training_curves(history, save_path):
 
     # Accuracy plot
     plt.subplot(1, 2, 2)
-    plt.plot(epochs, history["val_accuracy"], label="Val Accuracy")
+    plt.plot(history["epoch"], history["train_accuracy"], label="Train Accuracy")
+    plt.plot(history["epoch"], history["val_accuracy"], label="Val Accuracy")  # 🔁 FIX: use history["epoch"] for both
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
-    plt.title("Validation Accuracy")
+    plt.title("Training vs Validation Accuracy")  # 🔁 More informative title
     plt.legend()
 
     plt.tight_layout()
