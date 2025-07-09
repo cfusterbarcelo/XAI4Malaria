@@ -32,9 +32,9 @@ def evaluate_model(model, dataloader, loss_fn, metrics_fn, device, return_preds=
     all_indices = []
 
     with torch.no_grad():
-        for batch_idx, (images, labels) in tqdm(enumerate(dataloader), desc="Evaluating", leave=False):
-            images = images.to(device)
-            labels = labels.to(device)
+        for batch in tqdm(dataloader, desc="Evaluating", leave=False):
+            images = batch[0].to(device)
+            labels = batch[1].to(device)
 
             outputs = model(images)
             loss = loss_fn(outputs, labels)

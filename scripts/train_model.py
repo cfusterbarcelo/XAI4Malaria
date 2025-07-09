@@ -6,6 +6,7 @@ import yaml
 import torch
 import datetime
 import numpy as np
+import pandas as pd
 from sklearn.metrics import confusion_matrix
 from models.model_factory import get_model
 from training.train import train_one_fold
@@ -111,6 +112,17 @@ def main():
         # Generate and save confusion matrix
         val_labels = result.get("val_labels")
         val_preds = result.get("val_preds")
+
+        # Save test set images path
+        val_image_paths = [sample[2] for sample in val_loader.dataset.samples]
+        assert len(val_labels) == len(val_preds) == len(val_image_paths)
+        fold_df = pd.DataFrame({
+            "image_path": val_image_paths,
+            "true_label": val_labels,
+            "predicted_label": val_preds
+        })
+        fold_df.to_csv(os.path.join(fold_dir, "test_predictions.csv"), index=False)
+
         if val_labels is not None and val_preds is not None:
             cm = confusion_matrix(val_labels, val_preds)
             cm_path = os.path.join(fold_dir, "confusion_matrix.png")

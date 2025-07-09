@@ -63,8 +63,8 @@ def train_one_fold(
         total = 0
 
 
-        for images, labels in tqdm(train_loader, desc=f"Epoch {epoch+1}/{num_epochs}", leave=False):
-            images, labels = images.to(device), labels.to(device)
+        for batch_idx, batch in tqdm(enumerate(train_loader), desc=f"Epoch {epoch+1}/{num_epochs}", leave=False):
+            images, labels = batch[0].to(device), batch[1].to(device)
 
             optimizer.zero_grad()
             outputs = model(images)
@@ -79,6 +79,7 @@ def train_one_fold(
 
         train_accuracy = correct / total
         avg_loss = running_loss / len(train_loader.dataset)
+        
         val_metrics = evaluate_model(model, val_loader, loss_fn, metrics_fn, device)
 
         msg = (
@@ -108,7 +109,7 @@ def train_one_fold(
         # Check early stopping
         early_stopping(val_metrics["accuracy"])
         if early_stopping.early_stop:
-            print_and_log(f"⏹️ Early stopping triggered at epoch {epoch+1}", log_file)
+            print_and_log(f"Early stopping triggered at epoch {epoch+1}", log_file)
             break
 
     return {

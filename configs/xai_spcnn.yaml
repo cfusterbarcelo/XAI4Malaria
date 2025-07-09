@@ -1,0 +1,15 @@
+model:
+  name: spcnn
+  checkpoint_path: checkpoints/spcnn_fold0.pt
+  device: cuda
+
+data:
+  dataset: nih
+  image_dir: data/malaria_test_set/
+  image_size: 32
+  batch_size: 1
+
+xai:
+  method: gradcam       # <-- choose "gradcam", "shap", or "lime" here
+  target_layer: features.7
+  output_dir: results/xai_outputs/
