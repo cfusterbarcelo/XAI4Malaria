@@ -14,7 +14,9 @@ from training.loss import get_loss_function  # You’ll create this later
 from data.dataloader_factory import get_kfold_dataloaders
 from utils.visualization import plot_training_curves, plot_confusion_matrix
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 def load_yaml_config(path):
     with open(path, "r") as f:
@@ -44,6 +46,12 @@ def main():
     paths_cfg = load_yaml_config("configs/paths.yaml")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"Device name: {torch.cuda.get_device_name(0)}")
+        print(f"Current device: {torch.cuda.current_device()}")
+
+
     model_name = model_cfg["model"]["name"]
     data_root = paths_cfg["paths"]["data_root"]
     output_root = paths_cfg["paths"]["output_root"]
