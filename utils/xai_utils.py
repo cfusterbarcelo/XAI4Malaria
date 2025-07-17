@@ -9,24 +9,34 @@ def resolve_layer(model, path):
         cur = getattr(cur, p) if not p.isdigit() else cur[int(p)]
     return cur
 
-def overlay_heatmap(orig_pil, heatmap, alpha=0.5):
-    import numpy as np, cv2
-    # 1) load original as array
-    rgb = np.array(orig_pil)            # H×W×3
-    H, W, _ = rgb.shape
+def overlay_heatmap(orig_pil: Image.Image,
+                    cam: np.ndarray,  # assumed shape [Hcam,Wcam], floats 0–255 or 0–1
+                    alpha: float = 0.2):
+    """
+    Resize cam to orig size, colorize it, and blend with the original PIL image.
+    """
+    # convert PIL to BGR array
+    orig_np = cv2.cvtColor(np.array(orig_pil), cv2.COLOR_RGB2BGR)
+    H, W = orig_np.shape[:2]
 
-    # 2) make a jet‐colormap from your [0,1] heatmap
-    hm = np.uint8(255 * heatmap)        # H0×W0
-    hm_color = cv2.applyColorMap(hm, cv2.COLORMAP_JET)  
-    hm_color = cv2.cvtColor(hm_color, cv2.COLOR_BGR2RGB)  # H0×W0×3
+    # normalize cam to 0–255 uint8
+    cam_norm = cam.astype(np.float32)
+    cam_norm -= cam_norm.min()
+    cam_norm /= cam_norm.max()
+    cam_u8   = (cam_norm*255).astype(np.uint8)
 
-    # 3) resize to match original
-    hm_resized = cv2.resize(hm_color, (W, H), interpolation=cv2.INTER_LINEAR)
+    # resize up to match the original
+    cam_rs = cv2.resize(cam_u8, (W, H), interpolation=cv2.INTER_LINEAR)
 
-    # 4) blend
-    blended = cv2.addWeighted(rgb, 1 - alpha, hm_resized, alpha, 0)
+    # color-map it
+    heatmap = cv2.applyColorMap(cam_rs, cv2.COLORMAP_JET)
 
-    return Image.fromarray(blended)
+    # blend
+    overlay_bgr = cv2.addWeighted(orig_np, 1.0 - alpha, heatmap, alpha, 0)
+
+    # back to PIL RGB
+    overlay_rgb = cv2.cvtColor(overlay_bgr, cv2.COLOR_BGR2RGB)
+    return Image.fromarray(overlay_rgb)
 
 
 def dispatch_xai_explainer(method, model, target_module, device):
