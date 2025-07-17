@@ -1,0 +1,91 @@
+import os
+import cv2
+import numpy as np
+from PIL import Image
+
+def resolve_layer(model, path):
+    cur = model
+    for p in path.split('.'):
+        cur = getattr(cur, p) if not p.isdigit() else cur[int(p)]
+    return cur
+
+def overlay_heatmap(orig_pil, heatmap, alpha=0.5):
+    import numpy as np, cv2
+    # 1) load original as array
+    rgb = np.array(orig_pil)            # H×W×3
+    H, W, _ = rgb.shape
+
+    # 2) make a jet‐colormap from your [0,1] heatmap
+    hm = np.uint8(255 * heatmap)        # H0×W0
+    hm_color = cv2.applyColorMap(hm, cv2.COLORMAP_JET)  
+    hm_color = cv2.cvtColor(hm_color, cv2.COLOR_BGR2RGB)  # H0×W0×3
+
+    # 3) resize to match original
+    hm_resized = cv2.resize(hm_color, (W, H), interpolation=cv2.INTER_LINEAR)
+
+    # 4) blend
+    blended = cv2.addWeighted(rgb, 1 - alpha, hm_resized, alpha, 0)
+
+    return Image.fromarray(blended)
+
+
+def dispatch_xai_explainer(method, model, target_module, device):
+    import importlib
+    mapping = {
+      'gradcam':   ('gradcam','GradCAM'),
+      'gradcam++': ('gradcampp','GradCAMPlusPlus'),
+      'scorecam':  ('scorecam','ScoreCAM'),
+      # …and any future ones
+    }
+    if method not in mapping:
+      raise ValueError(f"Unknown XAI method {method}")
+    mod_name, cls_name = mapping[method]
+    mod = importlib.import_module(f'explainability.{mod_name}')
+    ExplClass = getattr(mod, cls_name)
+    return ExplClass(model, target_module, device)
+
+
+def save_cam(cam: np.ndarray,
+             orig_rgb: np.ndarray,
+             out_dir: str,
+             filename: str,
+             true_label: int,
+             pred_label: int,
+             mode: str = "overlay",
+             alpha: float = 0.4):
+    """
+    cam: H×W float in [0,1]
+    orig_rgb: H×W×3 uint8 (RGB)
+    mode: "raw", "heatmap", or "overlay"
+    alpha: blending weight for heatmap when overlaying
+    """
+    base, ext = os.path.splitext(filename)
+    out_fname = f"{base}_true{true_label}_pred{pred_label}{ext}"
+    out_path = os.path.join(out_dir, out_fname)
+    
+    # Dimensions of the original
+    H, W, _ = orig_rgb.shape
+
+    # 1) raw float map
+    if mode == "raw":
+        cv2.imwrite(out_path, (cam * 255).astype(np.uint8))
+        return out_path
+
+    # 2) make a color‐map (BGR)
+    heatmap = (cam * 255).astype(np.uint8)
+    heat_bgr = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+
+    if mode == "heatmap":
+        # resize the heatmap so it matches the orig image
+        heat_resized = cv2.resize(heat_bgr, (W, H), interpolation=cv2.INTER_LINEAR)
+        cv2.imwrite(out_path, heat_resized)
+        return out_path
+
+    # 3) overlay: we need both images to be same shape & channel count
+    orig_bgr = cv2.cvtColor(orig_rgb, cv2.COLOR_RGB2BGR)
+    heat_resized = cv2.resize(heat_bgr, (W, H), interpolation=cv2.INTER_LINEAR)
+
+    # now blend
+    overlay_bgr = cv2.addWeighted(orig_bgr, 1 - alpha, heat_resized, alpha, 0)
+    cv2.imwrite(out_path, overlay_bgr)
+    return out_path

@@ -52,13 +52,15 @@ class SPCNN(BaseModel):
         self.feature_extractor = nn.Sequential(
             ParallelBlock(self.parallel_convs),
             self.conv_blocks,
-            self.pool,            # << added
+            self.pool,           
             self.dropout_conv1,
             self.dropout_conv2,
             self.flatten,
-            self.norm             # << added
+            self.norm            
         )
 
+        self.features = self.feature_extractor
+        
         self.classifier = nn.Sequential(
             self.fc1,
             nn.ReLU(),

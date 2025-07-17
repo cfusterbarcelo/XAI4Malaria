@@ -1,7 +1,7 @@
 model:
   name: spcnn
-  run_name: 2025-07-07_15-32-10_SPCNN
-  fold: 0
+  run_name: 2025-07-10_10-47-13_SPCNN
+  fold: 1
   device: cuda
 
 data:
@@ -12,6 +12,8 @@ data:
 
 xai:
   method: gradcam
-  target_layer: features.7
+  target_layer: feature_extractor.1.3.block.0
   subset: all
-  curated_ids: []
+  curated_ids: [0]
+  save_mode: overlay # or heatmap or raw
+  normalieze_input: true
