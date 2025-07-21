@@ -11,6 +11,7 @@ from data.xai_dataloader import TestCSVImageDataset
 from data.transforms import get_preprocessing_pipeline
 from models.model_factory import get_model
 from explainability.gradcam import GradCAM
+from explainability.gradcam_plus_plus import GradCAMPlusPlus
 from utils.xai_utils import save_cam
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -103,6 +104,9 @@ def main():
     if method == "gradcam":
         tgt = resolve_target_module(model, target_layer)
         explainer = GradCAM(model, tgt, device=device)
+    elif method == "gradcam++":
+        tgt = resolve_target_module(model, target_layer)
+        explainer = GradCAMPlusPlus(model, tgt)
     else:
         raise NotImplementedError
 
@@ -112,8 +116,11 @@ def main():
     for img_tensor, filename, true_lbl, pred_lbl in loader:
         fname = os.path.basename(filename[0])
         img   = img_tensor.to(device)
-
-        cam = explainer.generate_heatmap(img, class_idx=int(pred_lbl[0]))
+        if method == "gradcam":
+            cam = explainer.generate_heatmap(img, class_idx=int(pred_lbl[0]))
+        else:
+            cam_tensor = explainer(img, class_idx=int(pred_lbl[0]))
+            cam = cam_tensor[0].detach().cpu().numpy()
 
         orig_bgr = cv2.imread(os.path.join(data_root, filename[0]), cv2.IMREAD_COLOR)
         orig_rgb = cv2.cvtColor(orig_bgr, cv2.COLOR_BGR2RGB)

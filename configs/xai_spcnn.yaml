@@ -11,7 +11,7 @@ data:
   apply_dilation: true
 
 xai:
-  method: gradcam
+  method: gradcam++
   target_layer: feature_extractor.1.3.block.0
   subset: all
   curated_ids: [0]
