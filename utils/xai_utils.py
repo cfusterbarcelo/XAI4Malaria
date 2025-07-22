@@ -54,7 +54,6 @@ def dispatch_xai_explainer(method, model, target_module, device):
     ExplClass = getattr(mod, cls_name)
     return ExplClass(model, target_module, device)
 
-
 def save_cam(cam: np.ndarray,
              orig_rgb: np.ndarray,
              out_dir: str,
@@ -64,7 +63,7 @@ def save_cam(cam: np.ndarray,
              mode: str = "overlay",
              alpha: float = 0.4):
     """
-    cam: H×W float in [0,1]
+    cam: H×W or H×W×C float in [0,1]
     orig_rgb: H×W×3 uint8 (RGB)
     mode: "raw", "heatmap", or "overlay"
     alpha: blending weight for heatmap when overlaying
@@ -73,7 +72,6 @@ def save_cam(cam: np.ndarray,
     out_fname = f"{base}_true{true_label}_pred{pred_label}{ext}"
     out_path = os.path.join(out_dir, out_fname)
     
-    # Dimensions of the original
     H, W, _ = orig_rgb.shape
 
     # 1) raw float map
@@ -81,21 +79,36 @@ def save_cam(cam: np.ndarray,
         cv2.imwrite(out_path, (cam * 255).astype(np.uint8))
         return out_path
 
-    # 2) make a color‐map (BGR)
-    heatmap = (cam * 255).astype(np.uint8)
-    heat_bgr = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+    # 2) percentile‐based stretch + uint8 map
+    low_p, high_p = 5, 99
+    p_low, p_high = np.percentile(cam, [low_p, high_p])
+    cam_clipped = np.clip(cam, p_low, p_high)
+    # rescale that window to [0,1]
+    cam_norm = (cam_clipped - p_low) / (p_high - p_low + 1e-8)
+    heatmap_u8 = (cam_norm * 255).astype(np.uint8)
+
+    # collapse any extra channel dimension
+    if heatmap_u8.ndim == 3:
+        # if it's H×W×1, squeeze; else average across channels
+        if heatmap_u8.shape[2] == 1:
+            heatmap_u8 = heatmap_u8[:, :, 0]
+        else:
+            # e.g. SHAP gave two channels—take the absolute‐mean
+            heatmap_u8 = np.mean(np.abs(heatmap_u8), axis=2).astype(np.uint8)
+    elif heatmap_u8.ndim != 2:
+        raise ValueError(f"Unexpected heatmap shape: {heatmap_u8.shape}")
+
+    # apply the colormap
+    heat_bgr = cv2.applyColorMap(heatmap_u8, cv2.COLORMAP_JET)
 
     if mode == "heatmap":
-        # resize the heatmap so it matches the orig image
         heat_resized = cv2.resize(heat_bgr, (W, H), interpolation=cv2.INTER_LINEAR)
         cv2.imwrite(out_path, heat_resized)
         return out_path
 
-    # 3) overlay: we need both images to be same shape & channel count
-    orig_bgr = cv2.cvtColor(orig_rgb, cv2.COLOR_RGB2BGR)
+    # 3) overlay
+    orig_bgr     = cv2.cvtColor(orig_rgb, cv2.COLOR_RGB2BGR)
     heat_resized = cv2.resize(heat_bgr, (W, H), interpolation=cv2.INTER_LINEAR)
-
-    # now blend
-    overlay_bgr = cv2.addWeighted(orig_bgr, 1 - alpha, heat_resized, alpha, 0)
+    overlay_bgr  = cv2.addWeighted(orig_bgr, 1 - alpha, heat_resized, alpha, 0)
     cv2.imwrite(out_path, overlay_bgr)
     return out_path

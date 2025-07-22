@@ -1,0 +1,18 @@
+# configs/xai_shap.yaml
+
+model:
+  name: spcnn
+  run_name: "2025-07-10_10-47-13_SPCNN"
+  fold: 1
+
+xai:
+  method: shap
+  explainer_type: gradient   # options: 'deep' or 'gradient'
+  background_size: 50        # number of images for SHAP background
+  nsamples: 100              # number of samples per explanation
+
+data:
+  image_size: 224
+  batch_size: 1              # process one image at a time for SHAP
+  apply_clahe: true
+  apply_dilation: false
