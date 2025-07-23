@@ -85,7 +85,10 @@ def save_cam(cam: np.ndarray,
     cam_clipped = np.clip(cam, p_low, p_high)
     # rescale that window to [0,1]
     cam_norm = (cam_clipped - p_low) / (p_high - p_low + 1e-8)
-    heatmap_u8 = (cam_norm * 255).astype(np.uint8)
+    p_high     = np.percentile(cam, 99)
+    cam_clipped = np.minimum(cam, p_high)
+    cam_norm    = (cam_clipped - cam.min()) / (p_high - cam.min() + 1e-8)
+    heatmap_u8  = (cam_norm * 255).astype(np.uint8)
 
     # collapse any extra channel dimension
     if heatmap_u8.ndim == 3:

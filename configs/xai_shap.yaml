@@ -7,7 +7,7 @@ model:
 
 xai:
   method: shap
-  explainer_type: gradient   # options: 'deep' or 'gradient'
+  explainer_type: deep   # options: 'deep' or 'gradient'
   background_size: 50        # number of images for SHAP background
   nsamples: 100              # number of samples per explanation
 

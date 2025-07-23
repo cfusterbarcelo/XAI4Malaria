@@ -31,6 +31,8 @@ class SHAPExplainer:
         self.nsamples = nsamples
         self.background = background.to(device)
 
+        self.explainer_type = explainer_type
+
         # Initialize SHAP explainer
         if explainer_type == 'deep':
             self.explainer = shap.DeepExplainer(self.model, self.background)
@@ -63,7 +65,10 @@ class SHAPExplainer:
                 class_idx = logits.argmax(dim=1).cpu().item()
 
         # Compute SHAP values
-        shap_values = self.explainer.shap_values(x, nsamples=self.nsamples)
+        if self.explainer_type == 'deep':
+            shap_values = self.explainer.shap_values(x, check_additivity=False)
+        else:
+            shap_values = self.explainer.shap_values(x, nsamples=self.nsamples)
 
         # Select for class
         if isinstance(shap_values, list):
