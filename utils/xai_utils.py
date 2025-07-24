@@ -11,7 +11,8 @@ def resolve_layer(model, path):
 
 def overlay_heatmap(orig_pil: Image.Image,
                     cam: np.ndarray,  # assumed shape [Hcam,Wcam], floats 0–255 or 0–1
-                    alpha: float = 0.2):
+                    alpha: float = 0.2,
+                    colormap = cv2.COLORMAP_JET):
     """
     Resize cam to orig size, colorize it, and blend with the original PIL image.
     """
@@ -29,7 +30,7 @@ def overlay_heatmap(orig_pil: Image.Image,
     cam_rs = cv2.resize(cam_u8, (W, H), interpolation=cv2.INTER_LINEAR)
 
     # color-map it
-    heatmap = cv2.applyColorMap(cam_rs, cv2.COLORMAP_JET)
+    heatmap = cv2.applyColorMap(cam_rs, colormap)
 
     # blend
     overlay_bgr = cv2.addWeighted(orig_np, 1.0 - alpha, heatmap, alpha, 0)
@@ -61,7 +62,8 @@ def save_cam(cam: np.ndarray,
              true_label: int,
              pred_label: int,
              mode: str = "overlay",
-             alpha: float = 0.4):
+             alpha: float = 0.4,
+             colormap=cv2.COLORMAP_JET):
     """
     cam: H×W or H×W×C float in [0,1]
     orig_rgb: H×W×3 uint8 (RGB)
@@ -102,7 +104,7 @@ def save_cam(cam: np.ndarray,
         raise ValueError(f"Unexpected heatmap shape: {heatmap_u8.shape}")
 
     # apply the colormap
-    heat_bgr = cv2.applyColorMap(heatmap_u8, cv2.COLORMAP_JET)
+    heat_bgr = cv2.applyColorMap(heatmap_u8, colormap)
 
     if mode == "heatmap":
         heat_resized = cv2.resize(heat_bgr, (W, H), interpolation=cv2.INTER_LINEAR)

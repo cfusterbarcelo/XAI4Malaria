@@ -1,0 +1,19 @@
+# configs/xai_lime.yaml
+
+model:
+  name: spcnn               # Model architecture: PCNN, SFPCNN or SPCNN
+  run_name: "2025-07-10_10-47-13_SPCNN" # Timestamped run directory under model_runs_dir
+  fold: 1                  # Which cross‑validation fold to explain
+
+xai:
+  method: lime            # Explainability method
+  num_samples: 1000       # Number of perturbed samples for LIME
+  hide_color: 0           # Pixel value used to mask super‐pixels
+  num_features: 5         # Number of super‐pixels to highlight
+  top_labels: 1           # How many of the top predicted classes to explain
+
+data:
+  image_size: 224         # Resize images to this size (H, W)
+  batch_size: 1           # Process one image at a time for LIME
+  apply_clahe: true       # Apply CLAHE during preprocessing
+  apply_dilation: false   # Apply dilation during preprocessing
