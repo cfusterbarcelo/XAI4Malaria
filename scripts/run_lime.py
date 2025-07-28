@@ -1,5 +1,4 @@
-# scripts/run_lime.py  (Adapted from run_shap.py fileciteturn9file3)
-
+#!/usr/bin/env python3
 import os
 import sys
 import yaml
@@ -11,12 +10,14 @@ from data.transforms import get_preprocessing_pipeline
 from models.model_factory import get_model
 from explainability.lime import LimeExplainer
 
+# Ensure project root is on PYTHONPATH
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 def load_yaml(path):
-    with open(path, "r") as f:
+    # Read YAML with UTF-8 encoding to avoid decode errors on Windows
+    with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 def main():
@@ -48,6 +49,10 @@ def main():
     checkpoint_path = os.path.join(fold_dir, "model.pth")
     xai_out_dir     = os.path.join(xai_base, run_name, f"fold_{fold}", "lime")
     os.makedirs(xai_out_dir, exist_ok=True)
+
+    # sanity check: CSV exists
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Couldn’t find predictions CSV at {csv_path}")
 
     # 3) data loader
     preprocess   = get_preprocessing_pipeline(
