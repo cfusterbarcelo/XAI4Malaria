@@ -99,7 +99,7 @@ def save_cam(cam: np.ndarray,
             heatmap_u8 = heatmap_u8[:, :, 0]
         else:
             # e.g. SHAP gave two channels—take the absolute‐mean
-            heatmap_u8 = np.mean(np.abs(heatmap_u8), axis=2).astype(np.uint8)
+            heatmap_u8 = np.abs(heatmap_u8[:,:,pred_label]).astype(np.uint8)
     elif heatmap_u8.ndim != 2:
         raise ValueError(f"Unexpected heatmap shape: {heatmap_u8.shape}")
 
