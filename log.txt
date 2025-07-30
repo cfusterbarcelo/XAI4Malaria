@@ -1,5 +1,0 @@
-CUDA available: True
-Device name: NVIDIA GeForce RTX 4090
-Current device: 0
-
-===== Fold 1/ 5 =====
