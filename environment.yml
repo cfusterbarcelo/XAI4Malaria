@@ -1,0 +1,18 @@
+name: xai4malaria-demo
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy=1.24.2
+  - opencv=4.8.0
+  - pytorch=2.1.0
+  - torchvision=0.15.2
+  - pillow
+  - matplotlib
+  - ipywidgets
+  - ipykernel
+  - pyyaml         # ← add this
+  - pip
+  - pip:
+      - shap
+      - lime
