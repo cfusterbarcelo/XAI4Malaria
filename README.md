@@ -1,7 +1,7 @@
 # XAI4Malaria
 ## Introduction
 
-This repository contains the core code for our research on explainable AI applied to single-cell malaria diagnosis. At its heart is a full reproduction of the Soft-Attention Parallel CNN (SPCNN) from Ahamed et al. (2025) — https://www.nature.com/articles/s41598-025-90851-1 — including network architecture and training on the NIH malaria image dataset. Since the original authors did not release their code, we implemented and validated SPCNN end-to-end (noting small performance gaps likely due to unavailable hyperparameter details).
+This repository contains the core code for our research on explainable AI applied to single-cell malaria diagnosis. At its heart is a full reproduction of the Soft-Attention Parallel CNN (SPCNN) from [Ahamed et al. (2025)](https://www.nature.com/articles/s41598-025-90851-1) — including network architecture and training on the NIH malaria image dataset. Since the original authors did not release their code, we implemented and validated SPCNN end-to-end (noting small performance gaps likely due to unavailable hyperparameter details).
 
 Building on that foundation, we integrate five complementary XAI techniques (Grad-CAM, Grad-CAM++, SHAP-Gradient, SHAP-Deep, and LIME) and provide interactive demo notebooks to generate, visualize, and compare their explanations. Our goal is to go beyond heatmaps: by engaging domain experts, we’ll assess each method’s clarity, usefulness, and trustworthiness in real-world diagnostic workflows.
 
@@ -19,13 +19,11 @@ Building on that foundation, we integrate five complementary XAI techniques (Gra
 
 
 ## 🎯 What’s Inside
-
 - **Dataset**  
-  We use the NLM-Falciparum-Thin-Cell-Images dataset (27 558 cropped RGB images of Giemsa-stained thin blood smear red blood cells), provided by the Lister Hill National Center for Biomedical Communications (LHNCBC), U.S. National Library of Medicine (2019), with expert annotations from the Mahidol Oxford Tropical Medicine Research Unit. Data is available at the NLM malaria datasheet: https://lhncbc.nlm.nih.gov/LHC-research/LHC-projects/image-processing/malaria-datasheet.html :contentReference[oaicite:3]{index=3}
+  We use the NLM-Falciparum-Thin-Cell-Images dataset (27 558 cropped RGB images of Giemsa-stained thin blood smear red blood cells), provided by the Lister Hill National Center for Biomedical Communications (LHNCBC), U.S. National Library of Medicine (2019), with expert annotations from the Mahidol Oxford Tropical Medicine Research Unit. Data is available at the [NLM malaria datasheet](https://lhncbc.nlm.nih.gov/LHC-research/LHC-projects/image-processing/malaria-datasheet.html)
 
 - **Baseline Model**  
-  A faithful reimplementation of the Soft Attention Parallel Convolutional Neural Network (SPCNN) from Fuster-Barceló et al., Scientific Reports 15:6484 (2025), including all architectural details and hyperparameters :contentReference[oaicite:4]{index=4}.
-
+  A faithful reimplementation of the Soft Attention Parallel Convolutional Neural Network (SPCNN) from [Ahamed et al., Scientific Reports (2025)](https://www.nature.com/articles/s41598-025-90851-1) including all architectural details and hyperparameters upon availability.
 
 - **Explainability Methods**  
   Integrated wrappers for Grad-CAM, Grad-CAM++, SHAP (Deep and Gradient variants), and LIME to generate both visual heatmaps and quantitative feature attributions.
@@ -51,10 +49,10 @@ To run locally:
 
 This project is the result of a joint effort between:
 
-- **Universidad Carlos III de Madrid**, Neuroscience & Biomedical Sciences Department  
-  — Prof. Arrate Muñoz-Barrutia
-  — Dr. Caterina Fuster-Barceló  
+- **[Universidad Carlos III de Madrid](https://www.uc3m.es/Home)**, Neuroscience & Biomedical Sciences Department  
+  — [Prof. Arrate Muñoz-Barrutia](https://orcid.org/0000-0002-1573-1661) 
+  — [Dr. Caterina Fuster-Barceló](https://orcid.org/0000-0002-4784-6957)  
 
-- **Universitat de les Illes Balears**, Department of Mathematics & Computer Science  
-  — Dr. Cristina Suemay Manresa Yee  
-  — Dr. Silvia Ramis Guarinos  
+- **[Universitat de les Illes Balears](https://www.uib.eu)**, Department of Mathematics & Computer Science  
+  — [Dr. Cristina Suemay Manresa Yee](https://orcid.org/0000-0002-1573-1661)  
+  — [Dr. Silvia Ramis Guarinos](https://orcid.org/0000-0002-1039-4387)   

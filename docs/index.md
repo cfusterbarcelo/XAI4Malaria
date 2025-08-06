@@ -39,10 +39,10 @@ Building on that foundation, we integrate five complementary XAI techniques (Gra
 ## 🎯 What’s Inside
 
 - **Dataset**  
-  We use the NLM-Falciparum-Thin-Cell-Images dataset (27 558 cropped RGB images of Giemsa-stained thin blood smear red blood cells), provided by the Lister Hill National Center for Biomedical Communications (LHNCBC), U.S. National Library of Medicine (2019), with expert annotations from the Mahidol Oxford Tropical Medicine Research Unit. Data is available at the NLM malaria datasheet: https://lhncbc.nlm.nih.gov/LHC-research/LHC-projects/image-processing/malaria-datasheet.html :contentReference[oaicite:3]{index=3}
+  We use the NLM-Falciparum-Thin-Cell-Images dataset (27 558 cropped RGB images of Giemsa-stained thin blood smear red blood cells), provided by the Lister Hill National Center for Biomedical Communications (LHNCBC), U.S. National Library of Medicine (2019), with expert annotations from the Mahidol Oxford Tropical Medicine Research Unit. Data is available at the [NLM malaria datasheet](https://lhncbc.nlm.nih.gov/LHC-research/LHC-projects/image-processing/malaria-datasheet.html)
 
 - **Baseline Model**  
-  A faithful reimplementation of the Soft Attention Parallel Convolutional Neural Network (SPCNN) from Fuster-Barceló et al., Scientific Reports 15:6484 (2025), including all architectural details and hyperparameters :contentReference[oaicite:4]{index=4}.
+  A faithful reimplementation of the Soft Attention Parallel Convolutional Neural Network (SPCNN) from [Ahamed et al., Scientific Reports (2025)](https://www.nature.com/articles/s41598-025-90851-1) including all architectural details and hyperparameters upon availability.
 
 
 - **Explainability Methods**  
