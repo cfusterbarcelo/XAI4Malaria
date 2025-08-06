@@ -77,7 +77,7 @@ To run locally:
 This project is the result of a joint effort between:
 
 - **Universidad Carlos III de Madrid**, Neuroscience & Biomedical Sciences Department  
-  — Prof. Arrate Muñoz-Barrutia
+  — Prof. Arrate Muñoz-Barrutia 
   — Dr. Caterina Fuster-Barceló  
 
 - **Universitat de les Illes Balears**, Department of Mathematics & Computer Science  
