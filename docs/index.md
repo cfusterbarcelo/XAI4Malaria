@@ -1,3 +1,24 @@
+---
+layout: home
+title: “XAI4Malaria”
+subtitle: “Bringing explainable AI to malaria diagnosis”
+---
+<p align="center">
+  <a href="https://colab.research.google.com/github/cfusterbarcelo/XAI4Malaria/blob/main/notebooks/demo.ipynb"
+     style="display: inline-block; margin: 0 0.5em; padding: 0.6em 1.2em;
+            background-color: #0066cc; color: #fff; border-radius: 4px;
+            text-decoration: none; font-weight: bold;">
+    🚀 Launch Demo (Colab)
+  </a>
+  <a href="https://github.com/cfusterbarcelo/XAI4Malaria"
+     style="display: inline-block; margin: 0 0.5em; padding: 0.6em 1.2em;
+            background-color: #24292e; color: #fff; border-radius: 4px;
+            text-decoration: none; font-weight: bold;">
+    📂 View on GitHub
+  </a>
+</p>
+
+
 # XAI4Malaria
 ## Introduction
 
@@ -47,6 +68,13 @@ To run locally:
   ```
 - Launch Jupyter and oipen `notebooks/demo.ipynb`
 
+## Example Explanations
+
+<div class="gallery">
+  <img src="/XAI4Malaria/assets/confusion_examples_all6.png" alt="XAI methods on sample cells" />
+</div>
+
+
 ## Ownership & Collaborators
 
 This project is the result of a joint effort between:
@@ -64,3 +92,6 @@ This project is the result of a joint effort between:
   <img src="utils/logos/Logo_UIB_2014.png" alt="UIB logo" width="200" />
 </p>
 
+## License
+
+This project is licensed under the **MIT License** -- see the [LICENSE](LICENSE) file for details
