@@ -52,7 +52,7 @@ Building on that foundation, we integrate five complementary XAI techniques (Gra
 
 Try out our interactive demo to see all five XAI methods in action:
 
-1. **Open** `notebooks/demo.ipynb` [here](notebooks\demo.ipynb) in your browser (e.g. upload to [Google Colab](https://colab.research.google.com/) for zero-install execution).  
+1. **Open** `notebooks/demo.ipynb` (click button at the top of this page) in your browser (e.g. upload to [Google Colab](https://colab.research.google.com/) for zero-install execution).  
 2. **Run** each cell to load the pretrained SPCNN, generate Grad-CAM, Grad-CAM++, SHAP-Gradient, SHAP-Deep, and LIME explanations, and compare them.  
 
 To run locally:
@@ -85,8 +85,8 @@ This project is the result of a joint effort between:
   — Dr. Silvia Ramis Guarinos  
 
 <p float="left">
-  <img src="utils/logos/Logo_UC3M.png" alt="UC3M logo" width="200" />
-  <img src="utils/logos/Logo_UIB_2014.png" alt="UIB logo" width="200" />
+  <img src="/XAI4Malaria/assets/Logo_UC3M.png" alt="UC3M logo" width="200" />
+  <img src="/XAI4Malaria/assets/Logo_UIB_2014.png" alt="UIB logo" width="200" />
 </p>
 
 ## License

@@ -58,9 +58,3 @@ This project is the result of a joint effort between:
 - **Universitat de les Illes Balears**, Department of Mathematics & Computer Science  
   — Dr. Cristina Suemay Manresa Yee  
   — Dr. Silvia Ramis Guarinos  
-
-<p float="left">
-  <img src="utils/logos/Logo_UC3M.png" alt="UC3M logo" width="200" />
-  <img src="utils/logos/Logo_UIB_2014.png" alt="UIB logo" width="200" />
-</p>
-
