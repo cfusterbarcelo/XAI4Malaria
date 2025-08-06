@@ -1,20 +1,19 @@
 # XAI4Malaria
 ## Introduction
 
-Accurate and rapid diagnosis of malaria remains a cornerstone of global health efforts, yet manual examination of blood smears is time-consuming and prone to variability. **XAI4Malaria** bridges this gap by combining a robust convolutional neural network (CNN) for parasitized red blood cell detection with state-of-the-art explainability methods—such as Grad-CAM, SHAP, and LIME—to not only automate malaria screening, but also to make every prediction transparent and interpretable.
+This repository contains the core code for our research on explainable AI applied to single-cell malaria diagnosis. At its heart is a full reproduction of the Soft-Attention Parallel CNN (SPCNN) from Ahamed et al. (2025) — https://www.nature.com/articles/s41598-025-90851-1 — including network architecture and training on the NIH malaria image dataset. Since the original authors did not release their code, we implemented and validated SPCNN end-to-end (noting small performance gaps likely due to unavailable hyperparameter details).
 
-Our focus goes beyond raw performance: we conduct **user-centered evaluations** with biologists, clinicians, and laboratory technicians to understand which visual and quantitative explanations truly resonate with domain experts. By gathering direct feedback on clarity, trustworthiness, and usefulness, XAI4Malaria delivers practical guidance on selecting and deploying explainability techniques in real-world biomedical settings.
-
-Whether you’re an AI researcher seeking best practices for model interpretability, or a healthcare professional curious about integrating explainable AI into diagnostic workflows, XAI4Malaria offers a hands-on framework, interactive demos, and survey-backed insights to empower stakeholders at every step of the pipeline.
+Building on that foundation, we integrate five complementary XAI techniques (Grad-CAM, Grad-CAM++, SHAP-Gradient, SHAP-Deep, and LIME) and provide interactive demo notebooks to generate, visualize, and compare their explanations. Our goal is to go beyond heatmaps: by engaging domain experts, we’ll assess each method’s clarity, usefulness, and trustworthiness in real-world diagnostic workflows.
 
 
 ## 📁 Project Structure  
 - `configs/` • hyperparams & YAML files  
-- `data/` • sample images & loader scripts  
-- `models/` • CNN & SPCNN implementations  
-- `explainability/` • Grad-CAM, SHAP, LIME wrappers  
-- `training/` • training pipelines  
-- `scripts/` • one-off utilities  
+- `data/` • loader scripts and data transformations  
+- `models/` • SPCNN model and model factory 
+- `notebooks/` • demo notebook with demo dataset
+- `explainability/` • Grad-CAM, Grad-CAM++, SHAP, LIME wrappers  
+- `training/` • training pipelines for SPCNN
+- `scripts/` • all scripts for running SPCNN and XAI
 - `utils/` • helpers  
 
 
@@ -30,9 +29,37 @@ Whether you’re an AI researcher seeking best practices for model interpretabil
 - **Explainability Methods**  
   Integrated wrappers for Grad-CAM, Grad-CAM++, SHAP (Deep and Gradient variants), and LIME to generate both visual heatmaps and quantitative feature attributions.
 
+## Demo Notebook
 
-## 🤝 Contributing
-1. Fork & branch
-2. Write tests
-3. Open a PR
+Try out our interactive demo to see all five XAI methods in action:
+
+1. **Open** `notebooks/demo.ipynb` in your browser (e.g. upload to [Google Colab](https://colab.research.google.com/) for zero-install execution).  
+2. **Run** each cell to load the pretrained SPCNN, generate Grad-CAM, Grad-CAM++, SHAP-Gradient, SHAP-Deep, and LIME explanations, and compare them.  
+
+To run locally:
+
+- Clone this repo  
+- Install dependencies with  
+  ```bash
+  conda env create -f environment.yaml
+  conda activate xai4malaria-demo
+  ```
+- Launch Jupyter and oipen `notebooks/demo.ipynb`
+
+## Ownership & Collaborators
+
+This project is the result of a joint effort between:
+
+- **Universidad Carlos III de Madrid**, Neuroscience & Biomedical Sciences Department  
+  — Prof. Arrate Muñoz-Barrutia
+  — Dr. Caterina Fuster-Barceló  
+
+- **Universitat de les Illes Balears**, Department of Mathematics & Computer Science  
+  — Dr. Cristina Suemay Manresa Yee  
+  — Dr. Silvia Ramis Guarinos  
+
+<p float="left">
+  <img src="utils/logos/Logo_UC3M.png" alt="UC3M logo" width="200" />
+  <img src="utils/logos/Logo_UIB_2014.png" alt="UIB logo" width="200" />
+</p>
 
