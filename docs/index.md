@@ -19,7 +19,7 @@ subtitle: “Bringing explainable AI to malaria diagnosis”
 
 ## Introduction
 
-This repository contains the core code for our research on explainable AI applied to single-cell malaria diagnosis. At its heart is a full reproduction of the Soft-Attention Parallel CNN (SPCNN) from Ahamed et al. (2025) — https://www.nature.com/articles/s41598-025-90851-1 — including network architecture and training on the NIH malaria image dataset. Since the original authors did not release their code, we implemented and validated SPCNN end-to-end (noting small performance gaps likely due to unavailable hyperparameter details).
+This repository contains the core code for our research on explainable AI applied to single-cell malaria diagnosis. At its heart is a full reproduction of the Soft-Attention Parallel CNN (SPCNN) from [Ahamed et al. (2025)](https://www.nature.com/articles/s41598-025-90851-1) — including network architecture and training on the NIH malaria image dataset. Since the original authors did not release their code, we implemented and validated SPCNN end-to-end (noting small performance gaps likely due to unavailable hyperparameter details).
 
 Building on that foundation, we integrate five complementary XAI techniques (Grad-CAM, Grad-CAM++, SHAP-Gradient, SHAP-Deep, and LIME) and provide interactive demo notebooks to generate, visualize, and compare their explanations. Our goal is to go beyond heatmaps: by engaging domain experts, we’ll assess each method’s clarity, usefulness, and trustworthiness in real-world diagnostic workflows.
 
