@@ -76,13 +76,13 @@ To run locally:
 
 This project is the result of a joint effort between:
 
-- **Universidad Carlos III de Madrid**, Neuroscience & Biomedical Sciences Department  
-  — Prof. Arrate Muñoz-Barrutia 
-  — Dr. Caterina Fuster-Barceló  
+- **[Universidad Carlos III de Madrid](https://www.uc3m.es/Home)**, Neuroscience & Biomedical Sciences Department  
+  — [Prof. Arrate Muñoz-Barrutia](https://orcid.org/0000-0002-1573-1661) 
+  — [Dr. Caterina Fuster-Barceló](https://orcid.org/0000-0002-4784-6957)  
 
-- **Universitat de les Illes Balears**, Department of Mathematics & Computer Science  
-  — Dr. Cristina Suemay Manresa Yee  
-  — Dr. Silvia Ramis Guarinos  
+- **[Universitat de les Illes Balears](https://www.uib.eu)**, Department of Mathematics & Computer Science  
+  — [Dr. Cristina Suemay Manresa Yee](https://orcid.org/0000-0002-1573-1661)  
+  — [Dr. Silvia Ramis Guarinos](https://orcid.org/0000-0002-1039-4387)  
 
 <p float="left">
   <img src="/XAI4Malaria/assets/Logo_UC3M.png" alt="UC3M logo" width="200" />
